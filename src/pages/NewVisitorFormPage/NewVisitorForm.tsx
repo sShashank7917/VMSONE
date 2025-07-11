@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import styles from "./NewVisitor.module.css";
 import { Button, Stack, TextField, MenuItem } from "@mui/material";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 
 const NewVisitorForm = () => {
@@ -46,61 +44,90 @@ const NewVisitorForm = () => {
       </div>
 
       <Stack className={styles.CenterContainer}>
-        <h2 className={styles.MainText}>New Visitor Form</h2>
+        <h2 className={styles.MainText}>Enter Your Details</h2>
         <form className={styles.form}>
-          <TextField label="Name" variant="outlined" fullWidth />
-          <TextField label="Phone" variant="outlined" fullWidth />
-          <TextField label="Email" variant="outlined" fullWidth />
-          <TextField label="Nationality" variant="outlined" fullWidth />
-          <TextField label="Company" variant="outlined" fullWidth />
-          <TextField label="Purpose" variant="outlined" fullWidth />
-          <TextField label="Host" variant="outlined" fullWidth />
+          <TextField 
+            label="Full Name" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Phone Number" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Email Address" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Nationality" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Company/Organization" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Purpose of Visit" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Host/Person to Meet" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
           <TextField
-            label="Category"
+            label="Visitor Category"
             variant="outlined"
             select
             fullWidth
+            className={styles.textField}
           >
             <MenuItem value="Employee">Employee</MenuItem>
             <MenuItem value="Guest">Guest</MenuItem>
             <MenuItem value="Contractor">Contractor</MenuItem>
           </TextField>
-          <TextField label="ID Proof" variant="outlined" fullWidth />
-          <TextField label="Vehicle & Asset Details" variant="outlined" fullWidth />
+          <TextField 
+            label="ID Proof Number" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
+          <TextField 
+            label="Vehicle & Asset Details" 
+            variant="outlined" 
+            fullWidth 
+            className={styles.textField}
+          />
 
           <Button
             variant="outlined"
             type="submit"
             className={styles.submitBtn}
           >
-            Submit
+            Submit Details
           </Button>
         </form>
       </Stack>
 
-      <div className={styles.BottomContainer}>
-        <Button
-          variant="outlined"
-          startIcon={<LogoutIcon fontSize="small" />}
-          className={styles.checkOutBtn}
-        >
-          Log-out
-        </Button>
-        <Stack className={styles.barBottom}></Stack>
-        <Button
-          variant="text"
-          startIcon={<ChangeCircleIcon fontSize="small" />}
-          className={styles.languageButton}
-        >
-          English
-        </Button>
-        <div className={styles.BottomRightContainer}>
-          <div className={styles.textContainer}>
-            <div>Powered By</div>
-            <div>VMSONE</div>
-          </div>
-          <SettingsIcon fontSize="small" />
+      <div className={styles.BottomRightContainer}>
+        <div className={styles.textContainer}>
+          <div>Powered By</div>
+          <div>VMSONE</div>
         </div>
+        <SettingsIcon fontSize="small" />
       </div>
     </div>
   );

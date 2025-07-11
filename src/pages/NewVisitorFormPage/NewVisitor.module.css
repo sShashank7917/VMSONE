@@ -1,10 +1,16 @@
+
 .container {
   min-height: 100vh;
+  width: 100vw;
   padding: 20px 40px;
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #fff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
 }
 
+/* Header */
 .MainHeaderContainer {
   display: flex;
   justify-content: space-between;
@@ -51,104 +57,62 @@
   margin-top: 10px;
 }
 
+/* Center Form */
 .CenterContainer {
-  margin-top: 22rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 0;
+  margin-top: 1rem;
+  width: 100%;
+
+  .MuiFormControl-root .MuiFormControl-fullWidth .MuiTextField-root{
+    color: #fff !important;
+  }
 }
 
 .MainText {
-  font-size: 1.5rem !important;
-  font-family: "Poppins" !important;
-  font-weight: 100 !important;
+  font-size: 2rem;
+  font-family: "Poppins";
+  font-weight: 300;
+  margin-bottom: 2rem;
+  text-align: center;
 }
 
-.SecondaryText {
-  font-size: 2.8rem !important;
-  font-family: "Poppins" !important;
-  font-weight: 300 !important;
-  letter-spacing: 4px;
-}
-
-.ButtonContainer {
-  display: flex !important;
-  flex-direction: row !important;
-  gap: 16px;
-}
-
-.newVistorBtn {
-  margin-top: 16px !important;
-  background: transparent;
-  color: white !important;
-  border: 1px solid white !important;
-  border-radius: 8px !important;
-  padding: 12px 24px !important;
-  font-size: 2rem !important;
-  font-weight: 300 !important;
-  text-transform: none !important;
-  line-height: 1.2 !important;
-}
-
-.preInvitedBtn {
-  margin-top: 16px !important;
-  background: transparent;
-
-  color: white !important;
-  border: 1px solid white !important;
-  border-radius: 8px !important;
-  padding: 12px 24px !important;
-  font-size: 2rem !important;
-  font-weight: 300 !important;
-  text-transform: none !important;
-  line-height: 1.2 !important;
-}
-
-.newVistorBtn:hover {
-  background-color: rgba(247, 198, 198, 0.1) !important;
-  border-color: white !important;
-}
-
-.BottomContainer {
+.form {
   display: flex;
-  position: fixed;
-  bottom: 40px;
-  left: 40px;
-  z-index: 10;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  max-width: none;
+  padding: 0;
 }
 
-.checkOutBtn {
-  margin-top: 0 !important;
+
+.submitBtn {
   background: transparent;
-  color: white !important;
-  border: 1px solid white !important;
-  border-radius: 8px !important;
-  padding: 12px 22px !important;
-  font-size: 1.2rem !important;
-  font-weight: 300 !important;
-  text-transform: none !important;
-  line-height: 1.2 !important;
+  color: white;
+  border: 2px solid white;
+  border-radius: 8px;
+  padding: 14px 28px;
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-transform: none;
+  line-height: 1.2;
+  margin-top: 20px;
+  transition: all 0.3s ease;
 }
 
-.barBottom {
-  width: 4px;
-  height: 50px;
-  background-color: #fff;
-  opacity: 0.7;
-  margin-left: 16px;
-  margin-top: 0;
+.submitBtn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  border-color: white;
 }
 
-.languageButton {
-  margin-left: 14px !important;
-  background: transparent;
-  color: white !important;
-  border-radius: 8px !important;
-  font-size: 1.2rem !important;
-  font-weight: 300 !important;
-  text-transform: none !important;
-  line-height: 1.2 !important;
-}
-
+/* Footer */
 .BottomRightContainer {
-  position: fixed;
+  justify-content: right;
   bottom: 40px;
   right: 40px;
   display: flex;
@@ -164,31 +128,47 @@
   flex-direction: column;
   text-align: right;
 }
- 
 
-.form {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  margin-top: 2rem;
-  max-width: 400px;
-  width: 100%;
+/* Responsive */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px 20px;
+    width: 100vw;
+  }
+
+  .MainText {
+    font-size: 1.5rem;
+  }
+
+  .container .MuiOutlinedInput-root {
+    height: 70px;
+    font-size: 1.1rem;
+  }
+
+  .container .MuiOutlinedInput-input {
+    font-size: 1.1rem;
+    padding: 18px 14px;
+    height: 70px;
+  }
 }
 
-.form .MuiOutlinedInput-root {
-  background: #fff;
-  color: #000;
-}
+@media (max-width: 480px) {
+  .container {
+    padding: 10px 15px;
+    width: 100vw;
+  }
 
-.submitBtn {
-  background: transparent;
-  color: white !important;
-  border: 1px solid white !important;
-  border-radius: 8px !important;
-  padding: 10px 20px !important;
-  font-size: 1rem !important;
-  font-weight: 300 !important;
-  text-transform: none !important;
-  line-height: 1.2 !important;
-  margin-top: 12px;
+  .MainText {
+    font-size: 1.3rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .container .MuiOutlinedInput-root {
+    height: 60px;
+  }
+
+  .container .MuiOutlinedInput-input {
+    height: 60px;
+    padding: 16px 12px;
+  }
 }
