@@ -1,4 +1,5 @@
 .container {
+  min-height: 100vh;
   padding: 20px 40px;
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #fff;
