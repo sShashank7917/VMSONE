@@ -1,0 +1,23 @@
+body {
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.app-header {
+  background-color: var(--color-primary);
+  color: white;
+  padding: var(--spacing-md);
+}
+
+.app-footer {
+  text-align: center;
+  padding: var(--spacing-sm);
+  font-size: 0.9rem;
+  color: #888;
+}

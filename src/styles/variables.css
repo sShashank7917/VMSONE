@@ -1,0 +1,21 @@
+:root {
+  /* Fonts */
+  --font-family: 'Poppins', sans-serif;
+
+  /* Colors */
+  --color-primary: #1976d2;
+  --color-primary-dark: #1565c0;
+  --color-secondary: #dc004e;
+  --color-background: #f9f9f9;
+  --color-text: #333;
+
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+
+  /* Border radius */
+  --border-radius: 8px;
+}
