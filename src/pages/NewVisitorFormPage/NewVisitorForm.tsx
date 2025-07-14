@@ -51,6 +51,7 @@ const NewVisitorForm = () => {
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter Your Full Name"
           />
 
           <TextField
@@ -58,36 +59,42 @@ const NewVisitorForm = () => {
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter Your Phonenumber"
           />
           <TextField
             label="Email Address"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter Your Email"
           />
           <TextField
             label="Nationality"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter nationality"
           />
           <TextField
             label="Company/Organization"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter Your Organization"
           />
           <TextField
             label="Purpose of Visit"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Purpoose of visit"
           />
           <TextField
             label="Host/Person to Meet"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter Host Name"
           />
           <TextField
             label="Visitor Category"
@@ -95,22 +102,45 @@ const NewVisitorForm = () => {
             select
             fullWidth
             className="textField"
+            placeholder="Enter Category"
           >
             <MenuItem value="Employee">Employee</MenuItem>
             <MenuItem value="Guest">Guest</MenuItem>
             <MenuItem value="Contractor">Contractor</MenuItem>
           </TextField>
           <TextField
+            label="ID Proof Type"
+            variant="outlined"
+            select
+            fullWidth
+            className="textField"
+            placeholder="ID Proof Type"
+          >
+            <MenuItem value="Adhaar">ADHAAR</MenuItem>
+            <MenuItem value="Pan">PAN</MenuItem>
+            <MenuItem value="DL">DRIVING LICENSE</MenuItem>
+            <MenuItem value="Passport">PASSPORT</MenuItem>
+          </TextField>
+          <TextField
             label="ID Proof Number"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter ID proof Number "
           />
           <TextField
-            label="Vehicle & Asset Details"
+            label="Vehicle Details"
             variant="outlined"
             fullWidth
             className="textField"
+            placeholder="Enter vehicle Details if any"
+          />
+          <TextField
+            label="Asset Details"
+            variant="outlined"
+            fullWidth
+            className="textField"
+            placeholder="List of Assets"
           />
 
           <Button variant="outlined" type="submit" className="submitBtn">
