@@ -11,8 +11,9 @@
 
 /* Header */
 .MainHeaderContainer {
-  display: flex;
+  flex-direction: row; 
   justify-content: space-between;
+  align-items: flex-start; /* optional */
 }
 
 .timeContainer {
@@ -246,32 +247,32 @@
   .container {
     padding: 15px 20px;
   }
-  
+
   .MainHeaderContainer {
-    flex-direction: column;
+    flex-direction: row;
     gap: 20px;
   }
-  
+
   .timeContainer {
     padding-top: 0;
   }
-  
+
   .time {
     font-size: 1.8rem;
   }
-  
+
   .cardsContainer {
     grid-template-columns: 1fr;
   }
-  
+
   .tableContainer {
     overflow-x: auto;
   }
-  
+
   .table {
     min-width: 800px;
   }
-  
+
   .MainText {
     font-size: 1.5rem;
   }
@@ -281,24 +282,24 @@
   .container {
     padding: 10px 15px;
   }
-  
+
   .timeContainer {
     flex-direction: column;
     gap: 10px;
   }
-  
+
   .bar {
     display: none;
   }
-  
+
   .card {
     padding: 15px;
   }
-  
+
   .cardNumber {
     font-size: 1.5rem;
   }
-  
+
   .tableHeaderCell,
   .tableCell {
     padding: 10px;
