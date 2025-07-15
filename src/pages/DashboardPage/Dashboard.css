@@ -242,7 +242,7 @@
 }
 
 /* Responsive Design */
-@media (max-width: 750px) {
+@media (max-width: 748px) {
   .container {
     padding: 15px 20px;
   }
