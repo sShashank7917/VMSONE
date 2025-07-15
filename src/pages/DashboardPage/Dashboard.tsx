@@ -107,7 +107,7 @@ const Dashboard = () => {
       </div>
 
       <div className="CenterContainer">
-        <h2 className="MainText">Visitor Management Dashboard</h2>
+        <h2 className="MainText">VMSONE Dashboard</h2>
         
         {/* Summary Cards */}
         <div className="cardsContainer">
