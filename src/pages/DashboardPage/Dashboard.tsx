@@ -10,9 +10,10 @@ import {
   Mail,
   User
 } from "lucide-react";
+import { DUMMY_VISITORS } from "./constant";
 
 // Define the Visitor interface
-interface Visitor {
+export interface Visitor {
   VISITOR_ID: string | number;
   FULL_NAME: string;
   COMPANY: string;
@@ -51,21 +52,13 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    fetchVisitors();
-  }, []);
-
-  const fetchVisitors = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("http://localhost:3000/api/visitors");
-      const data: Visitor[] = await response.json(); // Type the response
-      setVisitors(data);
-    } catch (error) {
-      console.error("Error fetching visitors:", error);
-    } finally {
+    setLoading(true);
+    // simulate network delay
+    setTimeout(() => {
+      setVisitors(DUMMY_VISITORS);
       setLoading(false);
-    }
-  };
+    }, 500);
+  }, []);
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
