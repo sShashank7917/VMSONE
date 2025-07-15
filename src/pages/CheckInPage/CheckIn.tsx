@@ -39,6 +39,10 @@ const CheckIn = () => {
     navigate("/newVistor");
   };
 
+  const handleDashboard =() => {
+    navigate("/dashboard")
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.MainHeaderContainer}>
@@ -74,6 +78,7 @@ const CheckIn = () => {
           variant="outlined"
           endIcon={<ArrowForwardIosIcon fontSize="small" />}
           className={styles.preInvitedBtn}
+          onClick={handleDashboard}
         >
           Pre-Invited
         </Button>
