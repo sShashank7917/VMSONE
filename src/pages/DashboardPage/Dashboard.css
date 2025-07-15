@@ -1,0 +1,307 @@
+/* Main Container */
+.container {
+  min-height: 100vh;
+  padding: 20px 40px;
+  background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+/* Header */
+.MainHeaderContainer {
+  display: flex;
+  justify-content: space-between;
+}
+
+.timeContainer {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+  padding-top: 30px;
+}
+
+.time {
+  font-size: 2.3rem;
+  font-weight: medium;
+}
+
+.bar {
+  width: 4px;
+  height: 50px;
+  background-color: #fff;
+  opacity: 0.7;
+}
+
+.dateContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.day {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.date {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+.logoContainer .logo {
+  height: 50px;
+  width: auto;
+  margin-top: 10px;
+}
+
+/* Center Container */
+.CenterContainer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 2rem 0;
+  margin-top: 1rem;
+  width: 100%;
+}
+
+.MainText {
+  font-size: 2rem;
+  font-family: "Poppins";
+  font-weight: 300;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* Summary Cards */
+.cardsContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.card {
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.cardIcon {
+  font-size: 2.5rem;
+  opacity: 0.9;
+}
+
+.cardText {
+  flex: 1;
+}
+
+.cardNumber {
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.cardLabel {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Table Styles */
+.tableContainer {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHeader {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.tableHeaderCell {
+  color: white;
+  font-weight: bold;
+  padding: 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  text-align: left;
+}
+
+.tableCell {
+  color: white;
+  padding: 12px 15px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  vertical-align: top;
+}
+
+.tableRow {
+  transition: background-color 0.3s ease;
+}
+
+.tableRow:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Table Cell Content */
+.cellWithIcon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.contactCell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.contactItem {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+}
+
+.contactEmail {
+  opacity: 0.8;
+}
+
+.dateTimeCell {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.dateText {
+  font-weight: bold;
+}
+
+.timeText {
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+/* Category Chip */
+.chip {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  color: white;
+}
+
+/* Loading Message */
+.loadingMessage {
+  text-align: center;
+  padding: 20px;
+  color: white;
+  font-size: 1.1rem;
+}
+
+/* Footer */
+.BottomRightContainer {
+  justify-content: right;
+  bottom: 40px;
+  right: 40px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.textContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px 20px;
+  }
+  
+  .MainHeaderContainer {
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .timeContainer {
+    padding-top: 0;
+  }
+  
+  .time {
+    font-size: 1.8rem;
+  }
+  
+  .cardsContainer {
+    grid-template-columns: 1fr;
+  }
+  
+  .tableContainer {
+    overflow-x: auto;
+  }
+  
+  .table {
+    min-width: 800px;
+  }
+  
+  .MainText {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px 15px;
+  }
+  
+  .timeContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .bar {
+    display: none;
+  }
+  
+  .card {
+    padding: 15px;
+  }
+  
+  .cardNumber {
+    font-size: 1.5rem;
+  }
+  
+  .tableHeaderCell,
+  .tableCell {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+}

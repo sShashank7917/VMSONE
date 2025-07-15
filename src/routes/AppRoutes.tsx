@@ -14,6 +14,7 @@ const AppRoutes = () => (
         <Route path="/check-in" element={<CheckIn />} />
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/newVistor" element={<NewVisitorForm />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
     </BrowserRouter>
   </ThemeProvider>
