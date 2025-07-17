@@ -10,10 +10,9 @@ import {
   Mail,
   User
 } from "lucide-react";
-import { DUMMY_VISITORS } from "./constant";
 
 // Define the Visitor interface
-export interface Visitor {
+interface Visitor {
   VISITOR_ID: string | number;
   FULL_NAME: string;
   COMPANY: string;
@@ -52,13 +51,21 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    setLoading(true);
-    // simulate network delay
-    setTimeout(() => {
-      setVisitors(DUMMY_VISITORS);
-      setLoading(false);
-    }, 500);
+    fetchVisitors();
   }, []);
+
+  const fetchVisitors = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch("ttps://vms-backend-vc05.onrender.com/api/visitors");
+      const data: Visitor[] = await response.json(); // Type the response
+      setVisitors(data);
+    } catch (error) {
+      console.error("Error fetching visitors:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
@@ -107,7 +114,7 @@ const Dashboard = () => {
       </div>
 
       <div className="CenterContainer">
-        <h2 className="MainText">VMSONE Dashboard</h2>
+        <h2 className="MainText">Visitor Management Dashboard</h2>
         
         {/* Summary Cards */}
         <div className="cardsContainer">
