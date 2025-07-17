@@ -35,7 +35,7 @@ const Home = () => {
   }, []);
 
   const handleCheckIn = () => {
-    navigate("/check-in");
+    navigate("/login");
   };
 
   return (
@@ -65,7 +65,7 @@ const Home = () => {
         className={styles.checkInBtn}
         onClick={handleCheckIn}
       >
-        Check-in
+        Login
       </Button>
 
       <div className={styles.BottomContainer}>
@@ -74,7 +74,7 @@ const Home = () => {
           startIcon={<LogoutIcon fontSize="small" />}
           className={styles.checkOutBtn}
         >
-          Check-out
+          Logout
         </Button>
         <Stack className={styles.barBottom}></Stack>
         <Button

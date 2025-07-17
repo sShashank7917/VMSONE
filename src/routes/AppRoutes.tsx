@@ -1,23 +1,59 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "../pages/HomePage/Home";
 import CheckIn from "../pages/CheckInPage/CheckIn";
 import Dashboard from "../pages/DashboardPage/Dashboard";
-import { ThemeProvider } from "@mui/material/styles";
-import theme from "../themes/theme";
 import NewVisitorForm from "../pages/NewVisitorFormPage/NewVisitorForm";
+import OTPVerification from "../pages/OTPValidationPage/OtpValidationPage";
+import Login from "../pages/Login/LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
+import SignupPage from "../pages/SignUp/SignupPage";
 
-const AppRoutes = () => (
-  <ThemeProvider theme={theme}>
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/check-in" element={<CheckIn />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/newVistor" element={<NewVisitorForm />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-      </Routes>
-    </BrowserRouter>
-  </ThemeProvider>
-);
+export default function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/signup" element={<SignupPage />} />
 
-export default AppRoutes;
+
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute allowedRoles={["admin"]}>
+            <Dashboard />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/check-in"
+        element={
+          <ProtectedRoute allowedRoles={["security"]}>
+            <CheckIn />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/newVisitor"
+        element={
+          <ProtectedRoute allowedRoles={["security"]}>
+            <NewVisitorForm />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/otpValidation"
+        element={
+          <ProtectedRoute allowedRoles={["security"]}>
+            <OTPVerification
+              onVerificationSuccess={() => console.log("OTP verified!")}
+              onBackToWelcome={() => window.location.href = "/check-in"}
+            />
+          </ProtectedRoute>
+        }
+      />
+    </Routes>
+  );
+}

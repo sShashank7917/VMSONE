@@ -36,12 +36,9 @@ const CheckIn = () => {
   }, []);
 
     const handleNewVisitorIn = () => {
-    navigate("/newVistor");
+    navigate("/newVisitor");
   };
 
-  const handleDashboard =() => {
-    navigate("/dashboard")
-  }
 
   return (
     <div className={styles.container}>
@@ -78,7 +75,6 @@ const CheckIn = () => {
           variant="outlined"
           endIcon={<ArrowForwardIosIcon fontSize="small" />}
           className={styles.preInvitedBtn}
-          onClick={handleDashboard}
         >
           Pre-Invited
         </Button>
