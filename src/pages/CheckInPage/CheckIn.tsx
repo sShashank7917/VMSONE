@@ -6,7 +6,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2";
+
+import LogoutModal from "../../components/CustomLogoutModal";
 
 const CheckIn = () => {
   const navigate = useNavigate();
@@ -14,6 +15,14 @@ const CheckIn = () => {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [day, setDay] = useState("");
+
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    title: "Log out?",
+    message: "You will be logged out and redirected to the login page.",
+    confirmText: "Yes, log out",
+    cancelText: "Stay here"
+  });
 
   useEffect(() => {
     const updateTime = () => {
@@ -39,19 +48,23 @@ const CheckIn = () => {
   };
 
   const handleLogout = () => {
-    Swal.fire({
+    setModalConfig({
       title: "Log out?",
-      text: "You will be logged out and redirected to login.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, log out",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem("token");
-        navigate("/login", { replace: true });
-      }
+      message: "You will be logged out and redirected to the login page.",
+      confirmText: "Yes, log out",
+      cancelText: "Stay here"
     });
+    setShowLogoutModal(true);
+  };
+
+  const handleModalConfirm = () => {
+    setShowLogoutModal(false);
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
+  };
+
+  const handleModalCancel = () => {
+    setShowLogoutModal(false);
   };
 
   return (
@@ -99,7 +112,7 @@ const CheckIn = () => {
           variant="outlined"
           startIcon={<LogoutIcon fontSize="small" />}
           className={styles.checkOutBtn}
-          onClick={handleLogout} 
+          onClick={handleLogout}
         >
           Log-out
         </Button>
@@ -121,6 +134,16 @@ const CheckIn = () => {
           <SettingsIcon fontSize="small" />
         </div>
       </div>
+
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onConfirm={handleModalConfirm}
+        onCancel={handleModalCancel}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
+      />
     </div>
   );
 };

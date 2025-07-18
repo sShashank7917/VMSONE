@@ -1,8 +1,7 @@
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
-import Swal from "sweetalert2";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useNavigate } from "react-router-dom"; // 👈
+import { useNavigate } from "react-router-dom";
 
 import { 
   Users, 
@@ -15,6 +14,7 @@ import {
   User
 } from "lucide-react";
 import Button from "@mui/material/Button";
+import LogoutModal from "../../components/CustomLogoutModal";
 
 // Define the Visitor interface
 interface Visitor {
@@ -35,34 +35,34 @@ const Dashboard = () => {
   const [day, setDay] = useState("");
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showLogoutModal, setShowLogoutModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    title: "Are you sure?",
+    message: "Going back will log you out of your current session. You'll need to sign in again to continue.",
+    confirmText: "Yes, log me out",
+    cancelText: "Stay here"
+  });
 
-  const navigate = useNavigate(); // 👈
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchVisitors();
   }, []);
 
+  // Browser back button handler with custom modal
   useEffect(() => {
     const handlePopState = (e: PopStateEvent) => {
       e.preventDefault();
-
-      Swal.fire({
+      setModalConfig({
         title: "Are you sure?",
-        text: "Going back will log you out.",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonText: "Yes, log me out",
-        cancelButtonText: "Stay here",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          logoutAndRedirect();
-        } else {
-          window.history.pushState(null, "", window.location.href);
-        }
+        message: "Going back will log you out of your current session. You'll need to sign in again to continue.",
+        confirmText: "Yes, log me out",
+        cancelText: "Stay here"
       });
+      setShowLogoutModal(true);
     };
 
-    window.history.pushState(null, "", window.location.href); // push dummy
+    window.history.pushState(null, "", window.location.href);
     window.addEventListener("popstate", handlePopState);
 
     return () => {
@@ -76,22 +76,27 @@ const Dashboard = () => {
   };
 
   const handleLogout = () => {
-    Swal.fire({
+    setModalConfig({
       title: "Log out?",
-      text: "You will be logged out and redirected to login.",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonText: "Yes, log out",
-      cancelButtonText: "Cancel",
-    }).then((result) => {
-      if (result.isConfirmed) {
-        logoutAndRedirect();
-      }
+      message: "You will be logged out and redirected to login page.",
+      confirmText: "Yes, log out",
+      cancelText: "Cancel"
     });
+    setShowLogoutModal(true);
   };
 
-  // ... rest of your existing code
+  const handleModalConfirm = () => {
+    setShowLogoutModal(false);
+    logoutAndRedirect();
+  };
 
+  const handleModalCancel = () => {
+    setShowLogoutModal(false);
+    // Only push state if this was from back button
+    if (window.history.state === null) {
+      window.history.pushState(null, "", window.location.href);
+    }
+  };
 
   useEffect(() => {
     const updateTime = () => {
@@ -111,37 +116,31 @@ const Dashboard = () => {
     return () => clearInterval(timer);
   }, []);
 
-  useEffect(() => {
-    fetchVisitors();
-  }, []);
+  const fetchVisitors = async () => {
+    try {
+      setLoading(true);
 
- const fetchVisitors = async () => {
-  try {
-    setLoading(true);
+      const token = localStorage.getItem("token");
+      if (!token) throw new Error("No token found!");
 
-    const token = localStorage.getItem("token");
-    if (!token) throw new Error("No token found!");
+      const response = await fetch("http://localhost:3000/api/visitors", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
-    const response = await fetch("http://localhost:3000/api/visitors", {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      const data: Visitor[] = await response.json();
+      setVisitors(data);
+    } catch (error) {
+      console.error("Error fetching visitors:", error);
+    } finally {
+      setLoading(false);
     }
-
-    const data: Visitor[] = await response.json();
-    setVisitors(data);
-  } catch (error) {
-    console.error("Error fetching visitors:", error);
-  } finally {
-    setLoading(false);
-  }
-};
-
-
+  };
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
@@ -311,7 +310,7 @@ const Dashboard = () => {
       </div>
 
       <div className="BottomRightContainer">
-         <Button
+        <Button
           variant="outlined"
           startIcon={<LogoutIcon fontSize="small" />}
           className="checkOutBtn"
@@ -325,6 +324,17 @@ const Dashboard = () => {
         </div>
         <Settings size={20} />
       </div>
+
+      {/* Custom Logout Modal */}
+      <LogoutModal
+        isOpen={showLogoutModal}
+        onConfirm={handleModalConfirm}
+        onCancel={handleModalCancel}
+        title={modalConfig.title}
+        message={modalConfig.message}
+        confirmText={modalConfig.confirmText}
+        cancelText={modalConfig.cancelText}
+      />
     </div>
   );
 };
