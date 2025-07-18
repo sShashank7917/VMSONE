@@ -62,7 +62,7 @@ const OTPVerification = ({ onVerificationSuccess, onBackToWelcome }: OTPVerifica
 
     setIsLoading(true);
     try {
-      const res = await fetch("https://vms-backend-vc05.onrender.com/api/send-otp", {
+      const res = await fetch("http://localhost:3000/api/send-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mobile: formData.mobile }),

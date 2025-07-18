@@ -52,7 +52,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
   try {
-    const res = await fetch("https://vms-backend-vc05.onrender.com/api/visitors", {
+    const res = await fetch("http://localhost:3000/api/visitors", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

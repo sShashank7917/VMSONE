@@ -54,18 +54,32 @@ const Dashboard = () => {
     fetchVisitors();
   }, []);
 
-  const fetchVisitors = async () => {
-    try {
-      setLoading(true);
-      const response = await fetch("ttps://vms-backend-vc05.onrender.com/api/visitors");
-      const data: Visitor[] = await response.json(); // Type the response
-      setVisitors(data);
-    } catch (error) {
-      console.error("Error fetching visitors:", error);
-    } finally {
-      setLoading(false);
+ const fetchVisitors = async () => {
+  try {
+    setLoading(true);
+
+    const token = localStorage.getItem("token");
+    if (!token) throw new Error("No token found!");
+
+    const response = await fetch("http://localhost:3000/api/visitors", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
     }
-  };
+
+    const data: Visitor[] = await response.json();
+    setVisitors(data);
+  } catch (error) {
+    console.error("Error fetching visitors:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const formatDateTime = (dateTimeString: string) => {
     const date = new Date(dateTimeString);
