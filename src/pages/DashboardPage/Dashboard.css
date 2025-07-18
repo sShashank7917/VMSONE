@@ -235,6 +235,19 @@
   font-size: 0.9rem;
   opacity: 0.8;
 }
+.checkOutBtn {
+  margin-top: 0 !important;
+  margin-right: 25px !important;
+  background: transparent;
+  color: white !important;
+  border: 1px solid white !important;
+  border-radius: 8px !important;
+  padding: 12px 22px !important;
+  font-size: 1.2rem !important;
+  font-weight: 300 !important;
+  text-transform: none !important;
+  line-height: 1.2 !important;
+}
 
 .textContainer {
   display: flex;

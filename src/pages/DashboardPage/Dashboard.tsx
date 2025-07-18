@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
 import "./Dashboard.css";
+import Swal from "sweetalert2";
+import LogoutIcon from "@mui/icons-material/Logout";
+import { useNavigate } from "react-router-dom"; // 👈
+
 import { 
   Users, 
   Calendar, 
@@ -10,6 +14,7 @@ import {
   Mail,
   User
 } from "lucide-react";
+import Button from "@mui/material/Button";
 
 // Define the Visitor interface
 interface Visitor {
@@ -28,9 +33,65 @@ const Dashboard = () => {
   const [time, setTime] = useState("");
   const [date, setDate] = useState("");
   const [day, setDay] = useState("");
-  // Type the visitors state properly
   const [visitors, setVisitors] = useState<Visitor[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const navigate = useNavigate(); // 👈
+
+  useEffect(() => {
+    fetchVisitors();
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = (e: PopStateEvent) => {
+      e.preventDefault();
+
+      Swal.fire({
+        title: "Are you sure?",
+        text: "Going back will log you out.",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, log me out",
+        cancelButtonText: "Stay here",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          logoutAndRedirect();
+        } else {
+          window.history.pushState(null, "", window.location.href);
+        }
+      });
+    };
+
+    window.history.pushState(null, "", window.location.href); // push dummy
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+
+  const logoutAndRedirect = () => {
+    localStorage.removeItem("token");
+    navigate("/login", { replace: true });
+  };
+
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Log out?",
+      text: "You will be logged out and redirected to login.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, log out",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        logoutAndRedirect();
+      }
+    });
+  };
+
+  // ... rest of your existing code
+
 
   useEffect(() => {
     const updateTime = () => {
@@ -79,6 +140,7 @@ const Dashboard = () => {
     setLoading(false);
   }
 };
+
 
 
   const formatDateTime = (dateTimeString: string) => {
@@ -249,6 +311,14 @@ const Dashboard = () => {
       </div>
 
       <div className="BottomRightContainer">
+         <Button
+          variant="outlined"
+          startIcon={<LogoutIcon fontSize="small" />}
+          className="checkOutBtn"
+          onClick={handleLogout}
+        >
+          Log-out
+        </Button>
         <div className="textContainer">
           <div>Powered By</div>
           <div>VMSONE</div>

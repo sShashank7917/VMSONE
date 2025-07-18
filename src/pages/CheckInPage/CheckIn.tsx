@@ -6,7 +6,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import ChangeCircleIcon from "@mui/icons-material/ChangeCircle";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
 
 const CheckIn = () => {
   const navigate = useNavigate();
@@ -18,15 +18,14 @@ const CheckIn = () => {
   useEffect(() => {
     const updateTime = () => {
       const now = new Date();
-
       const hours = now.getHours().toString().padStart(2, "0");
       const minutes = now.getMinutes().toString().padStart(2, "0");
-      const day = now.toLocaleDateString(undefined, { weekday: "long" });
+      const dayStr = now.toLocaleDateString(undefined, { weekday: "long" });
       const dateStr = now.toLocaleDateString();
 
       setTime(`${hours}:${minutes}`);
       setDate(`${dateStr}`);
-      setDay(`${day}`);
+      setDay(`${dayStr}`);
     };
 
     updateTime();
@@ -35,10 +34,25 @@ const CheckIn = () => {
     return () => clearInterval(timer);
   }, []);
 
-    const handleNewVisitorIn = () => {
+  const handleNewVisitorIn = () => {
     navigate("/newVisitor");
   };
 
+  const handleLogout = () => {
+    Swal.fire({
+      title: "Log out?",
+      text: "You will be logged out and redirected to login.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes, log out",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        navigate("/login", { replace: true });
+      }
+    });
+  };
 
   return (
     <div className={styles.container}>
@@ -85,9 +99,11 @@ const CheckIn = () => {
           variant="outlined"
           startIcon={<LogoutIcon fontSize="small" />}
           className={styles.checkOutBtn}
+          onClick={handleLogout} 
         >
           Log-out
         </Button>
+
         <Stack className={styles.barBottom}></Stack>
         <Button
           variant="text"
