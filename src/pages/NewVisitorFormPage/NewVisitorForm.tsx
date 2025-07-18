@@ -51,10 +51,19 @@ const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElemen
 const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
   e.preventDefault();
 
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("You must be logged in.");
+    return;
+  }
+
   try {
     const res = await fetch("http://localhost:3000/api/visitors", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
       body: JSON.stringify(formData),
     });
 
@@ -84,6 +93,7 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     alert("Error submitting visitor details");
   }
 };
+
 
 
   return (
