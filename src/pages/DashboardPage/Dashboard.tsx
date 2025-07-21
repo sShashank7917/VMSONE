@@ -3,15 +3,15 @@ import "./Dashboard.css";
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useNavigate } from "react-router-dom";
 
-import { 
-  Users, 
-  Calendar, 
-  Building, 
-  Clock, 
+import {
+  Users,
+  Calendar,
+  Building,
+  Clock,
   Settings,
   Phone,
   Mail,
-  User
+  User,
 } from "lucide-react";
 import Button from "@mui/material/Button";
 import LogoutModal from "../../components/CustomLogoutModal";
@@ -38,9 +38,10 @@ const Dashboard = () => {
   const [showLogoutModal, setShowLogoutModal] = useState(false);
   const [modalConfig, setModalConfig] = useState({
     title: "Are you sure?",
-    message: "Going back will log you out of your current session. You'll need to sign in again to continue.",
+    message:
+      "Going back will log you out of your current session. You'll need to sign in again to continue.",
     confirmText: "Yes, log me out",
-    cancelText: "Stay here"
+    cancelText: "Stay here",
   });
 
   const navigate = useNavigate();
@@ -55,9 +56,10 @@ const Dashboard = () => {
       e.preventDefault();
       setModalConfig({
         title: "Are you sure?",
-        message: "Going back will log you out of your current session. You'll need to sign in again to continue.",
+        message:
+          "Going back will log you out of your current session. You'll need to sign in again to continue.",
         confirmText: "Yes, log me out",
-        cancelText: "Stay here"
+        cancelText: "Stay here",
       });
       setShowLogoutModal(true);
     };
@@ -80,7 +82,7 @@ const Dashboard = () => {
       title: "Log out?",
       message: "You will be logged out and redirected to login page.",
       confirmText: "Yes, log out",
-      cancelText: "Cancel"
+      cancelText: "Cancel",
     });
     setShowLogoutModal(true);
   };
@@ -123,7 +125,7 @@ const Dashboard = () => {
       const token = localStorage.getItem("token");
       if (!token) throw new Error("No token found!");
 
-      const response = await fetch("http://localhost:3000/api/visitors", {
+      const response = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -146,30 +148,30 @@ const Dashboard = () => {
     const date = new Date(dateTimeString);
     return {
       date: date.toLocaleDateString(),
-      time: date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+      time: date.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
     };
   };
 
   const getCategoryColor = (category: string): string => {
     switch (category.toLowerCase()) {
-      case 'employee':
-        return '#4caf50';
-      case 'guest':
-        return '#ff9800';
-      case 'contractor':
-        return '#2196f3';
+      case "employee":
+        return "#4caf50";
+      case "guest":
+        return "#ff9800";
+      case "contractor":
+        return "#2196f3";
       default:
-        return '#9e9e9e';
+        return "#9e9e9e";
     }
   };
 
-  const todayVisitors = visitors.filter(visitor => {
+  const todayVisitors = visitors.filter((visitor) => {
     const visitDate = new Date(visitor.CHECK_IN_TIME);
     const today = new Date();
     return visitDate.toDateString() === today.toDateString();
   });
 
-  const uniqueCompanies = [...new Set(visitors.map(v => v.COMPANY))].length;
+  const uniqueCompanies = [...new Set(visitors.map((v) => v.COMPANY))].length;
 
   return (
     <div className="container">
@@ -190,7 +192,7 @@ const Dashboard = () => {
 
       <div className="CenterContainer">
         <h2 className="MainText">Visitor Management Dashboard</h2>
-        
+
         {/* Summary Cards */}
         <div className="cardsContainer">
           <div className="card">
@@ -288,7 +290,9 @@ const Dashboard = () => {
                       <td className="tableCell">
                         <span
                           className="chip"
-                          style={{ backgroundColor: getCategoryColor(visitor.CATEGORY) }}
+                          style={{
+                            backgroundColor: getCategoryColor(visitor.CATEGORY),
+                          }}
                         >
                           {visitor.CATEGORY}
                         </span>

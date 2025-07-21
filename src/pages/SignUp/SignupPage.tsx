@@ -13,7 +13,7 @@ const Signup = () => {
     full_name: "",
     email: "",
     password: "",
-    role: "security"
+    role: "security",
   });
 
   const [loading, setLoading] = useState(false);
@@ -40,7 +40,9 @@ const Signup = () => {
     return () => clearInterval(timer);
   }, []);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -52,7 +54,7 @@ const Signup = () => {
     setMessageType("");
 
     try {
-      const res = await fetch("http://localhost:3000/api/auth/signup", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
@@ -68,7 +70,7 @@ const Signup = () => {
           full_name: "",
           email: "",
           password: "",
-          role: "security"
+          role: "security",
         });
         // Redirect to login after 2 seconds
         setTimeout(() => {
@@ -110,12 +112,14 @@ const Signup = () => {
 
       <Stack className="CenterContainer">
         <h2 className="MainText">Create Account</h2>
-        
+
         <form className="signupForm" onSubmit={handleSignup}>
           {message && (
-            <Alert 
-              severity={messageType === "success" ? "success" : "error"} 
-              className={messageType === "success" ? "successAlert" : "errorAlert"}
+            <Alert
+              severity={messageType === "success" ? "success" : "error"}
+              className={
+                messageType === "success" ? "successAlert" : "errorAlert"
+              }
             >
               {message}
             </Alert>
@@ -179,11 +183,7 @@ const Signup = () => {
           </Button>
 
           <div className="linkContainer">
-            <Button
-              variant="text"
-              onClick={goToLogin}
-              className="linkBtn"
-            >
+            <Button variant="text" onClick={goToLogin} className="linkBtn">
               Already have an account? Login
             </Button>
           </div>

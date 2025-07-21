@@ -35,40 +35,44 @@ const Login = () => {
   }, []);
 
   const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError("");
+  e.preventDefault();
+  setLoading(true);
+  setError("");
 
-    try {
-      const res = await fetch("http://localhost:3000/api/auth/login", {
+  try {
+    const res = await fetch(
+      `${import.meta.env.VITE_API_URL}/auth/login`,
+      {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-      });
-
-      const data = await res.json();
-
-      if (data.access_token) {
-        localStorage.setItem("token", data.access_token);
-        const decoded: any = JSON.parse(atob(data.access_token.split(".")[1]));
-
-        if (decoded.role === "admin") {
-          navigate("/dashboard");
-        } else if (decoded.role === "security") {
-          navigate("/check-in");
-        } else {
-          navigate("/");
-        }
-      } else {
-        setError("Invalid credentials");
       }
-    } catch (err) {
-      console.error(err);
-      setError("Something went wrong. Please try again.");
-    } finally {
-      setLoading(false);
+    );
+
+    const data = await res.json();
+
+    if (data.access_token) {
+      localStorage.setItem("token", data.access_token);
+      const decoded: any = JSON.parse(atob(data.access_token.split(".")[1]));
+
+      if (decoded.role === "admin") {
+        navigate("/dashboard");
+      } else if (decoded.role === "security") {
+        navigate("/check-in");
+      } else {
+        navigate("/");
+      }
+    } else {
+      setError("Invalid credentials");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    setError("Something went wrong. Please try again.");
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const goToSignup = () => {
     navigate("/signup");

@@ -42,59 +42,58 @@ const NewVisitorForm = () => {
     return () => clearInterval(timer);
   }, []);
 
-const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  const { name, value } = e.target;
-  setFormData({ ...formData, [name]: value });
-};
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+  };
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("You must be logged in.");
-    return;
-  }
-
-  try {
-    const res = await fetch("http://localhost:3000/api/visitors", {
-      method: "POST",
-      headers: { 
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(formData),
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert(data.message || "Visitor registered successfully!");
-      setFormData({
-        full_name: "",
-        phone: "",
-        email: "",
-        nationality: "",
-        company: "",
-        id_proof_type: "",
-        id_proof_number: "",
-        purpose: "",
-        host: "",
-        category: "",
-        vehicle_details: "",
-        asset_details: "",
-      });
-    } else {
-      alert(data.message || "Error registering visitor.");
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Error submitting visitor details");
-  }
-};
 
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      });
 
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(data.message || "Visitor registered successfully!");
+        setFormData({
+          full_name: "",
+          phone: "",
+          email: "",
+          nationality: "",
+          company: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          purpose: "",
+          host: "",
+          category: "",
+          vehicle_details: "",
+          asset_details: "",
+        });
+      } else {
+        alert(data.message || "Error registering visitor.");
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting visitor details");
+    }
+  };
 
   return (
     <div className="container">
@@ -116,38 +115,124 @@ const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       <Stack className="CenterContainer">
         <h2 className="MainText">Enter Your Details</h2>
         <form className="form" onSubmit={handleSubmit}>
-          <TextField label="Full Name" name="full_name" value={formData.full_name} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Full Name"
+            name="full_name"
+            value={formData.full_name}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Phone Number" name="phone" value={formData.phone} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Phone Number"
+            name="phone"
+            value={formData.phone}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Email Address" name="email" value={formData.email} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Email Address"
+            name="email"
+            value={formData.email}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Nationality" name="nationality" value={formData.nationality} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Nationality"
+            name="nationality"
+            value={formData.nationality}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Company/Organization" name="company" value={formData.company} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Company/Organization"
+            name="company"
+            value={formData.company}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Purpose of Visit" name="purpose" value={formData.purpose} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Purpose of Visit"
+            name="purpose"
+            value={formData.purpose}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Host/Person to Meet" name="host" value={formData.host} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Host/Person to Meet"
+            name="host"
+            value={formData.host}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Visitor Category" name="category" select value={formData.category} onChange={handleChange} fullWidth className="textField">
+          <TextField
+            label="Visitor Category"
+            name="category"
+            select
+            value={formData.category}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          >
             <MenuItem value="Employee">Employee</MenuItem>
             <MenuItem value="Guest">Guest</MenuItem>
             <MenuItem value="Contractor">Contractor</MenuItem>
           </TextField>
 
-          <TextField label="ID Proof Type" name="id_proof_type" select value={formData.id_proof_type} onChange={handleChange} fullWidth className="textField">
+          <TextField
+            label="ID Proof Type"
+            name="id_proof_type"
+            select
+            value={formData.id_proof_type}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          >
             <MenuItem value="Adhaar">ADHAAR</MenuItem>
             <MenuItem value="Pan">PAN</MenuItem>
             <MenuItem value="DL">DRIVING LICENSE</MenuItem>
             <MenuItem value="Passport">PASSPORT</MenuItem>
           </TextField>
 
-          <TextField label="ID Proof Number" name="id_proof_number" value={formData.id_proof_number} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="ID Proof Number"
+            name="id_proof_number"
+            value={formData.id_proof_number}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Vehicle Details" name="vehicle_details" value={formData.vehicle_details} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Vehicle Details"
+            name="vehicle_details"
+            value={formData.vehicle_details}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
-          <TextField label="Asset Details" name="asset_details" value={formData.asset_details} onChange={handleChange} fullWidth className="textField" />
+          <TextField
+            label="Asset Details"
+            name="asset_details"
+            value={formData.asset_details}
+            onChange={handleChange}
+            fullWidth
+            className="textField"
+          />
 
           <Button variant="outlined" type="submit" className="submitBtn">
             Submit Details
