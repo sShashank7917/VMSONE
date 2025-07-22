@@ -56,13 +56,17 @@ const PreRegisteredPage = () => {
       formData.append("file", file);
 
       const token = localStorage.getItem("token");
-      const res = await fetch("/api/visitors/returning", {
-        method: "POST",
-        body: formData,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+
+      const res = await fetch(
+        `${import.meta.env.VITE_API_URL}/visitors/returning`,
+        {
+          method: "POST",
+          body: formData,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (!res.ok) throw new Error("Face match failed. Please try again.");
 
