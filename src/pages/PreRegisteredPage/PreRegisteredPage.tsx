@@ -31,40 +31,54 @@ const PreRegisteredPage = () => {
     return () => clearInterval(timer);
   }, []);
 
+  function dataURLtoBlob(dataURL: string): Blob {
+    const arr = dataURL.split(",");
+    const mime = arr[0].match(/:(.*?);/)![1];
+    const bstr = atob(arr[1]);
+    let n = bstr.length;
+    const u8arr = new Uint8Array(n);
+    while (n--) {
+      u8arr[n] = bstr.charCodeAt(n);
+    }
+    return new Blob([u8arr], { type: mime });
+  }
+
   const handleFaceCapture = async (imageData: string) => {
+    setFaceScanOpen(false);
     setIsMatching(true);
-    setFaceScanOpen(false); // Close the modal immediately
-    
-    // send captured face to backend for validation
-    const token = localStorage.getItem("token");
 
     try {
-      const res = await fetch(
-        `${import.meta.env.VITE_API_URL}/returning-visitor/match-face`,
-        {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ face_image: imageData }),
-        }
-      );
+      // Convert base64 string → Blob
+      const blob = dataURLtoBlob(imageData);
+      const file = new File([blob], "face.jpg", { type: blob.type });
+
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const token = localStorage.getItem("token");
+      const res = await fetch("/api/visitors/returning", {
+        method: "POST",
+        body: formData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!res.ok) throw new Error("Face match failed. Please try again.");
 
       const data = await res.json();
 
-      if (res.ok && data.visitor) {
-        // save visitor data in localStorage or state mgmt for pre-filling
-        localStorage.setItem("prefillVisitor", JSON.stringify(data.visitor));
-        navigate("/returning-visitor-form");
-      } else {
-        setIsMatching(false);
-        alert(data.message || "Face not recognized. Please try again.");
-      }
-    } catch (err) {
+      navigate("/newVisitor", {
+        state: {
+          visitor: data.visitor,
+          distance: data.distance,
+        },
+      });
+    } catch (err: any) {
       console.error(err);
+      alert(err.message || "Something went wrong.");
+    } finally {
       setIsMatching(false);
-      alert("Error validating face.");
     }
   };
 
@@ -88,29 +102,36 @@ const PreRegisteredPage = () => {
       <Stack className="CenterContainer">
         <h2 className="MainText">Returning Visitor Verification</h2>
         <p className="subText">
-          {isMatching ? "Verifying your identity..." : "Please scan your face to continue"}
+          {isMatching
+            ? "Verifying your identity..."
+            : "Please scan your face to continue"}
         </p>
 
         <div className="face-scan-section">
           {isMatching ? (
             <div className="loading-container">
-              <CircularProgress 
-                size={60} 
+              <CircularProgress
+                size={60}
                 thickness={4}
-                sx={{ 
-                  color: 'white',
-                  '& .MuiCircularProgress-circle': {
-                    strokeLinecap: 'round',
-                  }
+                sx={{
+                  color: "white",
+                  "& .MuiCircularProgress-circle": {
+                    strokeLinecap: "round",
+                  },
                 }}
               />
               <div className="loading-text">
                 <div className="loading-title">Matching Face...</div>
-                <div className="loading-subtitle">Please wait while we verify your identity</div>
+                <div className="loading-subtitle">
+                  Please wait while we verify your identity
+                </div>
               </div>
             </div>
           ) : (
-            <div className="face-scan-card" onClick={() => setFaceScanOpen(true)}>
+            <div
+              className="face-scan-card"
+              onClick={() => setFaceScanOpen(true)}
+            >
               <div className="face-scan-icon">
                 <svg
                   width="32"

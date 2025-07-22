@@ -86,7 +86,6 @@ const NewVisitorForm = () => {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
-        // ❌ DO NOT set Content-Type here. Let browser set it
       },
       body: formDataToSend,
     });
