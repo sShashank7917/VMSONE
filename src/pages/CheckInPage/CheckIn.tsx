@@ -47,6 +47,10 @@ const CheckIn = () => {
     navigate("/newVisitor");
   };
 
+  const handlePreRegistredUser = () => {
+    navigate("/PreRegistred")
+  }
+
   const handleLogout = () => {
     setModalConfig({
       title: "Log out?",
@@ -102,8 +106,9 @@ const CheckIn = () => {
           variant="outlined"
           endIcon={<ArrowForwardIosIcon fontSize="small" />}
           className={styles.preInvitedBtn}
+          onClick={handlePreRegistredUser}
         >
-          Pre-Invited
+          Pre-Registered
         </Button>
       </Stack>
 

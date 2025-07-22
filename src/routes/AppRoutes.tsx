@@ -7,6 +7,7 @@ import OTPVerification from "../pages/OTPValidationPage/OtpValidationPage";
 import Login from "../pages/Login/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import SignupPage from "../pages/SignUp/SignupPage";
+import PreRegisteredPage from "../pages/PreRegisteredPage/PreRegisteredPage";
 
 export default function AppRoutes() {
   return (
@@ -14,6 +15,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<SignupPage />} />
+      <Route path="/PreRegistred" element={<PreRegisteredPage/>} />
 
 
       <Route
