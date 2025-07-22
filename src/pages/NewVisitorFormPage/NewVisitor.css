@@ -121,17 +121,170 @@
   text-align: right;
 }
 
-/* white border */
+/* Material UI Overrides for white theme */
 .MuiOutlinedInput-root .MuiOutlinedInput-notchedOutline {
   border-color: white !important;
 }
 
-/* white label */
 .MuiInputLabel-root {
   color: white !important;
 }
 
-/* white text */
 .MuiInputBase-input {
   color: white !important;
+}
+
+.MuiSvgIcon-root {
+  color: white !important;
+}
+
+.MuiSelect-icon {
+  color: white !important;
+}
+
+/* Face Scan Section */
+.face-scan-section {
+  margin: 8px 0;
+}
+
+.face-scan-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px;
+  border: 2px solid rgba(255, 255, 255, 0.5);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+  position: relative;
+}
+
+.face-scan-card:hover {
+  border-color: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.face-scan-card.verified {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.face-scan-card.verified:hover {
+  border-color: #10b981;
+  background: rgba(16, 185, 129, 0.15);
+}
+
+.face-scan-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.face-scan-card.verified .face-scan-icon {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+}
+
+.face-scan-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  text-align: center;
+}
+
+.face-scan-title {
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: white;
+  line-height: 1.3;
+}
+
+.face-scan-card.verified .face-scan-title {
+  color: #10b981;
+}
+
+.face-scan-subtitle {
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.3;
+}
+
+.face-scan-card.verified .face-scan-subtitle {
+  color: rgba(16, 185, 129, 0.8);
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .container {
+    padding: 15px 20px;
+  }
+
+  .timeContainer {
+    gap: 15px;
+    padding-top: 20px;
+  }
+
+  .time {
+    font-size: 2rem;
+  }
+
+  .MainText {
+    font-size: 1.5rem;
+  }
+
+  .face-scan-card {
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .face-scan-icon {
+    width: 40px;
+    height: 40px;
+  }
+
+  .face-scan-title {
+    font-size: 1rem;
+  }
+
+  .face-scan-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .BottomRightContainer {
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .MainHeaderContainer {
+    flex-direction: column;
+    gap: 20px;
+    align-items: flex-start;
+  }
+
+  .logoContainer {
+    align-self: flex-end;
+  }
+
+  .face-scan-card {
+    padding: 14px;
+    gap: 10px;
+  }
+
+  .face-scan-text {
+    gap: 2px;
+  }
 }
