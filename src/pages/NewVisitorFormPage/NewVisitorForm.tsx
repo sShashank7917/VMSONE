@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import "./NewVisitor.css";
 import { Button, Stack, TextField, MenuItem } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
-import FaceScanModal from "pages/FaceScanPage/faceScanPage";
+import FaceScanModal from "../FaceScanPage/FaceScan";
 
 const NewVisitorForm = () => {
   const [time, setTime] = useState("");
