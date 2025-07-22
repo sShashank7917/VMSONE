@@ -81,7 +81,7 @@
   border: 1px solid white !important;
   border-radius: 8px !important;
   padding: 12px 24px !important;
-  font-size: 2rem !important;
+  font-size: 1.5rem !important;
   font-weight: 300 !important;
   text-transform: none !important;
   line-height: 1.2 !important;
@@ -90,12 +90,11 @@
 .preInvitedBtn {
   margin-top: 16px !important;
   background: transparent;
-
   color: white !important;
   border: 1px solid white !important;
   border-radius: 8px !important;
   padding: 12px 24px !important;
-  font-size: 2rem !important;
+  font-size: 1.5rem !important;
   font-weight: 300 !important;
   text-transform: none !important;
   line-height: 1.2 !important;

@@ -21,7 +21,7 @@ const CheckIn = () => {
     title: "Log out?",
     message: "You will be logged out and redirected to the login page.",
     confirmText: "Yes, log out",
-    cancelText: "Stay here"
+    cancelText: "Stay here",
   });
 
   useEffect(() => {
@@ -48,15 +48,15 @@ const CheckIn = () => {
   };
 
   const handlePreRegistredUser = () => {
-    navigate("/PreRegistred")
-  }
+    navigate("/PreRegistred");
+  };
 
   const handleLogout = () => {
     setModalConfig({
       title: "Log out?",
       message: "You will be logged out and redirected to the login page.",
       confirmText: "Yes, log out",
-      cancelText: "Stay here"
+      cancelText: "Stay here",
     });
     setShowLogoutModal(true);
   };
