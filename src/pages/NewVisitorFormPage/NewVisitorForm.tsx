@@ -117,12 +117,19 @@ const NewVisitorForm = () => {
       });
 
       // ✅ safely convert base64 to blob
-      if (capturedFace.startsWith("data:image")) {
-        const blob = base64ToBlob(capturedFace);
-        formDataToSend.append("file", blob, "face.jpg");
+      if (isReturningVisitor) {
+        formDataToSend.append(
+          "visitor_id",
+          String(returningVisitorData.visitor.visitor_id)
+        );
       } else {
-        alert("Invalid face image data.");
-        return;
+        if (capturedFace && capturedFace.startsWith("data:image")) {
+          const blob = base64ToBlob(capturedFace);
+          formDataToSend.append("file", blob, "face.jpg");
+        } else {
+          alert("Invalid face image data.");
+          return;
+        }
       }
 
       if (isReturningVisitor) {
