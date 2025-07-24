@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import "./NewVisitor.css";
 import { Button, Stack, TextField, MenuItem } from "@mui/material";
 import SettingsIcon from "@mui/icons-material/Settings";
@@ -10,6 +11,11 @@ const NewVisitorForm = () => {
   const [day, setDay] = useState("");
   const [faceScanOpen, setFaceScanOpen] = useState(false);
   const [capturedFace, setCapturedFace] = useState<string | null>(null);
+  
+  // Get data passed from PreRegisteredPage
+  const location = useLocation();
+  const returningVisitorData = location.state;
+  const isReturningVisitor = !!returningVisitorData?.visitor;
 
   // 💡 Form state
   const [formData, setFormData] = useState({
@@ -45,6 +51,24 @@ const NewVisitorForm = () => {
     return () => clearInterval(timer);
   }, []);
 
+  // 🔥 Pre-populate form if returning visitor
+  useEffect(() => {
+    if (isReturningVisitor && returningVisitorData.visitor) {
+      const visitor = returningVisitorData.visitor;
+      setFormData(prev => ({
+        ...prev,
+        full_name: visitor.full_name || "",
+        phone: visitor.phone || "",
+        email: visitor.email || "",
+        nationality: visitor.nationality || "",
+        company: visitor.company || "",
+      }));
+      
+      // Mark face as already captured/verified
+      setCapturedFace("verified_from_preregister");
+    }
+  }, [isReturningVisitor, returningVisitorData]);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -56,68 +80,115 @@ const NewVisitorForm = () => {
     setCapturedFace(imageData);
   };
 
- const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
-  if (!capturedFace) {
-    alert("Please complete the face scan verification before submitting.");
-    return;
-  }
-
-  const token = localStorage.getItem("token");
-  if (!token) {
-    alert("You must be logged in.");
-    return;
-  }
-
-  try {
-    const formDataToSend = new FormData();
-
-    // append DTO fields
-    Object.entries(formData).forEach(([key, value]) => {
-      formDataToSend.append(key, value);
-    });
-
-    // convert base64 image → blob
-    const blob = await fetch(capturedFace).then((res) => res.blob());
-    formDataToSend.append("file", blob, "face.jpg");
-
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-      body: formDataToSend,
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert(data.message || "Visitor registered successfully with face verification!");
-      setFormData({
-        full_name: "",
-        phone: "",
-        email: "",
-        nationality: "",
-        company: "",
-        id_proof_type: "",
-        id_proof_number: "",
-        purpose: "",
-        host: "",
-        category: "",
-        vehicle_details: "",
-        asset_details: "",
-      });
-      setCapturedFace(null);
-    } else {
-      alert(data.message || "Error registering visitor.");
+    if (!capturedFace) {
+      alert("Please complete the face scan verification before submitting.");
+      return;
     }
-  } catch (err) {
-    console.error(err);
-    alert("Error submitting visitor details");
-  }
-};
 
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("You must be logged in.");
+      return;
+    }
+
+    try {
+      if (isReturningVisitor) {
+        // 🔥 For returning visitors - only create visit record
+        const visitData = {
+          visitor_id: returningVisitorData.visitor.visitor_id,
+          purpose: formData.purpose,
+          host: formData.host,
+          category: formData.category,
+          vehicle_details: formData.vehicle_details,
+          asset_details: formData.asset_details,
+          id_proof_type: formData.id_proof_type,
+          id_proof_number: formData.id_proof_number,
+        };
+
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(visitData),
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert(data.message || "Visit logged successfully! Welcome back.");
+          // Reset form
+          setFormData({
+            full_name: "",
+            phone: "",
+            email: "",
+            nationality: "",
+            company: "",
+            id_proof_type: "",
+            id_proof_number: "",
+            purpose: "",
+            host: "",
+            category: "",
+            vehicle_details: "",
+            asset_details: "",
+          });
+          setCapturedFace(null);
+        } else {
+          alert(data.message || "Error logging visit.");
+        }
+      } else {
+        // 🔥 For new visitors - create visitor record with face
+        const formDataToSend = new FormData();
+
+        // append DTO fields
+        Object.entries(formData).forEach(([key, value]) => {
+          formDataToSend.append(key, value);
+        });
+
+        // convert base64 image → blob
+        const blob = await fetch(capturedFace).then((res) => res.blob());
+        formDataToSend.append("file", blob, "face.jpg");
+
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formDataToSend,
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          alert(data.message || "Visitor registered successfully with face verification!");
+          setFormData({
+            full_name: "",
+            phone: "",
+            email: "",
+            nationality: "",
+            company: "",
+            id_proof_type: "",
+            id_proof_number: "",
+            purpose: "",
+            host: "",
+            category: "",
+            vehicle_details: "",
+            asset_details: "",
+          });
+          setCapturedFace(null);
+        } else {
+          alert(data.message || "Error registering visitor.");
+        }
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error submitting visitor details");
+    }
+  };
 
   return (
     <div className="container">
@@ -137,7 +208,19 @@ const NewVisitorForm = () => {
       </div>
 
       <Stack className="CenterContainer">
-        <h2 className="MainText">Enter Your Details</h2>
+        <h2 className="MainText">
+          {isReturningVisitor ? "Welcome Back! Complete Your Visit" : "Enter Your Details"}
+        </h2>
+        
+        {/* 🔥 Show welcome message for returning visitors */}
+        {isReturningVisitor && (
+          <div className="returning-visitor-banner">
+            <p style={{ color: "#4CAF50", marginBottom: "10px", fontSize: "14px" }}>
+              ✓ Identity verified - {returningVisitorData.visitor.full_name}
+            </p>
+          </div>
+        )}
+
         <form className="form" onSubmit={handleSubmit}>
           <TextField
             label="Full Name"
@@ -147,6 +230,16 @@ const NewVisitorForm = () => {
             fullWidth
             className="textField"
             required
+            // 🔥 Make read-only for returning visitors
+            InputProps={{
+              readOnly: isReturningVisitor,
+            }}
+            sx={isReturningVisitor ? { 
+              '& .MuiInputBase-input': { 
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }
+            } : {}}
           />
 
           <TextField
@@ -157,6 +250,15 @@ const NewVisitorForm = () => {
             fullWidth
             className="textField"
             required
+            InputProps={{
+              readOnly: isReturningVisitor,
+            }}
+            sx={isReturningVisitor ? { 
+              '& .MuiInputBase-input': { 
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }
+            } : {}}
           />
 
           <TextField
@@ -168,6 +270,15 @@ const NewVisitorForm = () => {
             fullWidth
             className="textField"
             required
+            InputProps={{
+              readOnly: isReturningVisitor,
+            }}
+            sx={isReturningVisitor ? { 
+              '& .MuiInputBase-input': { 
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }
+            } : {}}
           />
 
           <TextField
@@ -178,6 +289,15 @@ const NewVisitorForm = () => {
             fullWidth
             className="textField"
             required
+            InputProps={{
+              readOnly: isReturningVisitor,
+            }}
+            sx={isReturningVisitor ? { 
+              '& .MuiInputBase-input': { 
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }
+            } : {}}
           />
 
           <TextField
@@ -187,6 +307,15 @@ const NewVisitorForm = () => {
             onChange={handleChange}
             fullWidth
             className="textField"
+            InputProps={{
+              readOnly: isReturningVisitor,
+            }}
+            sx={isReturningVisitor ? { 
+              '& .MuiInputBase-input': { 
+                backgroundColor: '#f5f5f5',
+                color: '#666'
+              }
+            } : {}}
           />
 
           <TextField
@@ -270,11 +399,12 @@ const NewVisitorForm = () => {
             className="textField"
           />
 
-          {/* Face Scan Section */}
+          {/* 🔥 Face Scan Section - Modified for returning visitors */}
           <div className="face-scan-section">
             <div 
               className={`face-scan-card ${capturedFace ? 'verified' : ''}`}
-              onClick={() => setFaceScanOpen(true)}
+              onClick={() => !isReturningVisitor && setFaceScanOpen(true)}
+              style={isReturningVisitor ? { cursor: 'default' } : {}}
             >
               <div className="face-scan-icon">
                 {capturedFace ? (
@@ -291,18 +421,23 @@ const NewVisitorForm = () => {
               </div>
               <div className="face-scan-text">
                 <div className="face-scan-title">
-                  {capturedFace ? 'Face Verified ✓' : 'Face Scan Required'}
+                  {capturedFace ? (
+                    isReturningVisitor ? 'Face Already Verified ✓' : 'Face Verified ✓'
+                  ) : 'Face Scan Required'}
                 </div>
                 <div className="face-scan-subtitle">
-                  {capturedFace ? 'Click to retake photo' : 'Click to capture your photo'}
+                  {capturedFace ? (
+                    isReturningVisitor ? 
+                    `Verified with ${(100 - (returningVisitorData.distance * 100)).toFixed(1)}% confidence` :
+                    'Click to retake photo'
+                  ) : 'Click to capture your photo'}
                 </div>
               </div>
-             
             </div>
           </div>
 
           <Button variant="outlined" type="submit" className="submitBtn">
-            Submit Details
+            {isReturningVisitor ? "Complete Check-in" : "Submit Details"}
           </Button>
         </form>
       </Stack>
@@ -315,12 +450,14 @@ const NewVisitorForm = () => {
         <SettingsIcon fontSize="small" />
       </div>
 
-      {/* Face Scan Modal */}
-      <FaceScanModal
-        open={faceScanOpen}
-        onClose={() => setFaceScanOpen(false)}
-        onCapture={handleFaceCapture}
-      />
+      {/* 🔥 Face Scan Modal - Only for new visitors */}
+      {!isReturningVisitor && (
+        <FaceScanModal
+          open={faceScanOpen}
+          onClose={() => setFaceScanOpen(false)}
+          onCapture={handleFaceCapture}
+        />
+      )}
     </div>
   );
 };

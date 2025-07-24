@@ -1,8 +1,7 @@
-@import './App.css';
-@import './variables.css';
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
-
+@import "./App.css";
+@import "./variables.css";
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap");
 
 /* CSS Reset & Base styles */
 * {
@@ -11,9 +10,53 @@
   box-sizing: border-box;
 }
 
-html,body {
+html,
+body {
   font-family: var(--font-family);
   background-color: var(--color-background);
   color: var(--color-text);
   line-height: 1.5;
 }
+
+/* Make all MUI TextFields transparent globally */
+.MuiOutlinedInput-root {
+  background-color: transparent !important;
+  color: white !important;
+}
+
+.MuiOutlinedInput-root .MuiOutlinedInput-input {
+  background-color: transparent !important;
+}
+
+/* Handle browser autofill - prevents white background on saved form data */
+.MuiOutlinedInput-root input:-webkit-autofill,
+.MuiOutlinedInput-root input:-webkit-autofill:hover,
+.MuiOutlinedInput-root input:-webkit-autofill:focus,
+.MuiOutlinedInput-root input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px transparent inset !important;
+  -webkit-text-fill-color: inherit !important;
+  background-color: transparent !important;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Style for read-only fields - use opacity instead of background color */
+.MuiOutlinedInput-root .MuiOutlinedInput-input[readonly] {
+  background-color: transparent !important;
+  opacity: 0.9;
+}
+
+/* Handle Select dropdowns as well */
+.MuiSelect-select {
+  background-color: transparent !important;
+}
+
+/* Handle filled TextFields if you use them */
+.MuiFilledInput-root {
+  background-color: transparent !important;
+}
+
+.MuiFilledInput-root:before,
+.MuiFilledInput-root:after {
+  border-bottom-color: var(--text-color) !important;
+}
+
