@@ -86,11 +86,9 @@ const NewVisitorForm = () => {
     const byteString = atob(parts[1]);
     const arrayBuffer = new ArrayBuffer(byteString.length);
     const uint8Array = new Uint8Array(arrayBuffer);
-
     for (let i = 0; i < byteString.length; i++) {
       uint8Array[i] = byteString.charCodeAt(i);
     }
-
     return new Blob([arrayBuffer], { type: mimeType });
   };
 
@@ -111,7 +109,6 @@ const NewVisitorForm = () => {
     try {
       const formDataToSend = new FormData();
 
-      // append form fields
       Object.entries(formData).forEach(([key, value]) => {
         formDataToSend.append(key, value);
       });
@@ -119,23 +116,16 @@ const NewVisitorForm = () => {
       if (isReturningVisitor) {
         formDataToSend.append(
           "visitor_id",
-          (returningVisitorData.visitor.visitor_id)
+          String(returningVisitorData.visitor.visitor_id)
         );
       } else {
-        if (capturedFace && capturedFace.startsWith("data:image")) {
+        if (capturedFace.startsWith("data:image")) {
           const blob = base64ToBlob(capturedFace);
           formDataToSend.append("file", blob, "face.jpg");
         } else {
           alert("Invalid face image data.");
           return;
         }
-      }
-
-      if (isReturningVisitor) {
-        formDataToSend.append(
-          "visitor_id",
-          String(returningVisitorData.visitor.visitor_id)
-        );
       }
 
       const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
@@ -156,21 +146,32 @@ const NewVisitorForm = () => {
               : "Visitor registered successfully with face verification!")
         );
 
-        setFormData({
-          full_name: "",
-          phone: "",
-          email: "",
-          nationality: "",
-          company: "",
-          id_proof_type: "",
-          id_proof_number: "",
-          purpose: "",
-          host: "",
-          category: "",
-          vehicle_details: "",
-          asset_details: "",
-        });
-        setCapturedFace(null);
+        // Reset logic
+        if (isReturningVisitor) {
+          setFormData((prev) => ({
+            ...prev,
+            purpose: "",
+            host: "",
+            vehicle_details: "",
+            asset_details: "",
+          }));
+        } else {
+          setFormData({
+            full_name: "",
+            phone: "",
+            email: "",
+            nationality: "",
+            company: "",
+            id_proof_type: "",
+            id_proof_number: "",
+            purpose: "",
+            host: "",
+            category: "",
+            vehicle_details: "",
+            asset_details: "",
+          });
+          setCapturedFace(null);
+        }
       } else {
         alert(data.message || "Error submitting visitor.");
       }
