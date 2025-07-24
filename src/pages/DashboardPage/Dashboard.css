@@ -1,6 +1,6 @@
-/* Main Container */
+
 .container {
-  min-height: 100vh;
+  min-height: 100vh !important;
   padding: 20px 40px;
   background: linear-gradient(135deg, #dc2626 0%, #b91c1c 100%);
   color: #fff;
@@ -11,9 +11,9 @@
 
 /* Header */
 .MainHeaderContainer {
-  flex-direction: row; 
+  flex-direction: row;
   justify-content: space-between;
-  align-items: flex-start; /* optional */
+  align-items: flex-start;
 }
 
 .timeContainer {
@@ -67,6 +67,7 @@
   padding: 2rem 0;
   margin-top: 1rem;
   width: 100%;
+  min-height: 0; /* Allow container to shrink */
 }
 
 .MainText {
@@ -124,6 +125,52 @@
   opacity: 0.8;
 }
 
+/* Table Controls */
+.tableControlsContainer {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding: 0 5px;
+}
+
+.rowsPerPageContainer {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.controlLabel {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.rowsPerPageSelect {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 6px;
+  color: white;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.rowsPerPageSelect:focus {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.rowsPerPageSelect option {
+  background: #dc2626;
+  color: white;
+}
+
+.tableInfo {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
 /* Table Styles */
 .tableContainer {
   width: 100%;
@@ -132,6 +179,7 @@
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 12px;
   overflow: hidden;
+  margin-bottom: 1rem;
 }
 
 .table {
@@ -223,28 +271,107 @@
   font-size: 1.1rem;
 }
 
-/* Footer */
-.BottomRightContainer {
-  justify-content: right;
-  bottom: 40px;
-  right: 40px;
+/* Pagination Styles */
+.paginationContainer {
   display: flex;
-  flex-direction: row;
   align-items: center;
-  gap: 8px;
-  font-size: 0.9rem;
-  opacity: 0.8;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  width: 100%;
 }
+
+.paginationButton {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.paginationButton:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.paginationButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.paginationNumbers {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.paginationNumber {
+  min-width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 6px;
+  color: white;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.paginationNumber:hover:not(:disabled):not(.dots) {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+.paginationNumber.active {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  font-weight: bold;
+}
+
+.paginationNumber.dots {
+  background: transparent;
+  border: none;
+  cursor: default;
+  opacity: 0.6;
+}
+
+.paginationNumber.dots:hover {
+  background: transparent;
+  transform: none;
+}
+
+/* Footer - Removed fixed positioning */
+.BottomRightContainer {
+  position: relative !important;
+  display: flex;
+  justify-content: flex-end; 
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+  opacity: 0.9;
+  width: 100%;
+  padding: 12px 16px;
+  box-sizing: border-box;
+}
+
 .checkOutBtn {
-  margin-top: 0 !important;
-  margin-right: 25px !important;
   background: transparent;
   color: white !important;
   border: 1px solid white !important;
   border-radius: 8px !important;
-  padding: 12px 22px !important;
-  font-size: 1.2rem !important;
-  font-weight: 300 !important;
+  padding: 10px 20px !important;
+  font-size: 1.1rem !important;
+  font-weight: 400 !important;
   text-transform: none !important;
   line-height: 1.2 !important;
 }
@@ -253,6 +380,7 @@
   display: flex;
   flex-direction: column;
   text-align: right;
+  color: white;
 }
 
 /* Responsive Design */
@@ -289,6 +417,33 @@
   .MainText {
     font-size: 1.5rem;
   }
+
+  .tableControlsContainer {
+    flex-direction: column;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .paginationContainer {
+    flex-wrap: wrap;
+    gap: 5px;
+  }
+
+  .paginationButton {
+    padding: 6px 10px;
+    font-size: 0.8rem;
+  }
+
+  .paginationNumber {
+    min-width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .BottomRightContainer {
+    justify-content: center;
+    text-align: center;
+  }
 }
 
 @media (max-width: 480px) {
@@ -317,5 +472,22 @@
   .tableCell {
     padding: 10px;
     font-size: 0.85rem;
+  }
+
+  .paginationContainer {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .paginationNumbers {
+    order: 2;
+  }
+
+  .paginationButton:first-child {
+    order: 1;
+  }
+
+  .paginationButton:last-child {
+    order: 3;
   }
 }
