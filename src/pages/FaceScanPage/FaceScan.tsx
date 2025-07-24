@@ -11,6 +11,8 @@ const FaceScanModal: React.FC<FaceScanModalProps> = ({ open, onClose, onCapture 
   const [stream, setStream] = useState<MediaStream | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
 
+
+
   useEffect(() => {
     if (open && !capturedImage) {
       startCamera();

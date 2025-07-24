@@ -76,6 +76,7 @@ const PreRegisteredPage = () => {
         state: {
           visitor: data.visitor,
           distance: data.distance,
+          faceFile: file,  // sending file also
         },
       });
     } catch (err: any) {
