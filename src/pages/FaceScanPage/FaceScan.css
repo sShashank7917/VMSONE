@@ -14,7 +14,7 @@
   padding: 20px;
   box-sizing: border-box;
   z-index: 9999;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .face-scan-header {
@@ -59,7 +59,7 @@
   font-weight: 300;
   margin: 0 0 1rem 0;
   text-align: center;
-  font-family: 'Poppins', Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif;
 }
 
 .camera-container {
@@ -81,12 +81,11 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transform: scaleX(-1); 
 }
 
 .face-outline {
   position: absolute;
-  top: 50%;
-  left: 50%;
   transform: translate(-50%, -50%);
   width: 60%;
   height: 75%;
@@ -201,24 +200,24 @@
   .face-scan-overlay {
     padding: 15px;
   }
-  
+
   .face-scan-title {
     font-size: 1.5rem;
   }
-  
+
   .camera-container {
     max-width: 320px;
   }
-  
+
   .capture-button {
     width: 70px;
     height: 70px;
   }
-  
+
   .instructions {
     font-size: 1rem;
   }
-  
+
   .face-scan-branding {
     bottom: 20px;
     right: 20px;
@@ -231,7 +230,7 @@
     flex-direction: column;
     gap: 12px;
   }
-  
+
   .retake-button,
   .submit-button {
     width: 200px;
