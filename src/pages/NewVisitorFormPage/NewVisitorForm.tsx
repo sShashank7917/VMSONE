@@ -116,11 +116,10 @@ const NewVisitorForm = () => {
         formDataToSend.append(key, value);
       });
 
-      // ✅ safely convert base64 to blob
       if (isReturningVisitor) {
         formDataToSend.append(
           "visitor_id",
-          String(returningVisitorData.visitor.visitor_id)
+          (returningVisitorData.visitor.visitor_id)
         );
       } else {
         if (capturedFace && capturedFace.startsWith("data:image")) {
