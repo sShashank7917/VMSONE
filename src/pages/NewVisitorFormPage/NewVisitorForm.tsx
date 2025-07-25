@@ -92,94 +92,103 @@ const NewVisitorForm = () => {
     return new Blob([arrayBuffer], { type: mimeType });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+ // Replace the form submission logic in handleSubmit function
 
-    if (!capturedFace) {
-      alert("Please complete the face scan verification before submitting.");
-      return;
+const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+
+  if (!capturedFace) {
+    alert("Please complete the face scan verification before submitting.");
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+  if (!token) {
+    alert("You must be logged in.");
+    return;
+  }
+
+  try {
+    const formDataToSend = new FormData();
+
+    Object.entries(formData).forEach(([key, value]) => {
+      formDataToSend.append(key, value);
+    });
+
+    if (isReturningVisitor) {
+      // Send visitor_id for returning visitors
+      formDataToSend.append(
+        "visitor_id",
+        (returningVisitorData.visitor.visitor_id)
+      );
+      
+      // FIXED: Also send the captured face file for returning visitors
+      if (returningVisitorData.faceFile) {
+        formDataToSend.append("file", returningVisitorData.faceFile, "face.jpg");
+      }
+    } else {
+      // For new visitors, convert base64 to blob
+      if (capturedFace.startsWith("data:image")) {
+        const blob = base64ToBlob(capturedFace);
+        formDataToSend.append("file", blob, "face.jpg");
+      } else {
+        alert("Invalid face image data.");
+        return;
+      }
     }
 
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("You must be logged in.");
-      return;
-    }
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      body: formDataToSend,
+    });
 
-    try {
-      const formDataToSend = new FormData();
+    const data = await res.json();
 
-      Object.entries(formData).forEach(([key, value]) => {
-        formDataToSend.append(key, value);
-      });
+    if (res.ok) {
+      alert(
+        data.message ||
+          (isReturningVisitor
+            ? "Visit logged successfully! Welcome back."
+            : "Visitor registered successfully with face verification!")
+      );
 
+      // Reset logic remains the same...
       if (isReturningVisitor) {
-        formDataToSend.append(
-          "visitor_id",
-          String(returningVisitorData.visitor.visitor_id)
-        );
+        setFormData((prev) => ({
+          ...prev,
+          purpose: "",
+          host: "",
+          vehicle_details: "",
+          asset_details: "",
+        }));
       } else {
-        if (capturedFace.startsWith("data:image")) {
-          const blob = base64ToBlob(capturedFace);
-          formDataToSend.append("file", blob, "face.jpg");
-        } else {
-          alert("Invalid face image data.");
-          return;
-        }
+        setFormData({
+          full_name: "",
+          phone: "",
+          email: "",
+          nationality: "",
+          company: "",
+          id_proof_type: "",
+          id_proof_number: "",
+          purpose: "",
+          host: "",
+          category: "",
+          vehicle_details: "",
+          asset_details: "",
+        });
+        setCapturedFace(null);
       }
-
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/visitors`, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        body: formDataToSend,
-      });
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(
-          data.message ||
-            (isReturningVisitor
-              ? "Visit logged successfully! Welcome back."
-              : "Visitor registered successfully with face verification!")
-        );
-
-        // Reset logic
-        if (isReturningVisitor) {
-          setFormData((prev) => ({
-            ...prev,
-            purpose: "",
-            host: "",
-            vehicle_details: "",
-            asset_details: "",
-          }));
-        } else {
-          setFormData({
-            full_name: "",
-            phone: "",
-            email: "",
-            nationality: "",
-            company: "",
-            id_proof_type: "",
-            id_proof_number: "",
-            purpose: "",
-            host: "",
-            category: "",
-            vehicle_details: "",
-            asset_details: "",
-          });
-          setCapturedFace(null);
-        }
-      } else {
-        alert(data.message || "Error submitting visitor.");
-      }
-    } catch (err) {
-      console.error(err);
-      alert("Error submitting visitor details");
+    } else {
+      alert(data.message || "Error submitting visitor.");
     }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error submitting visitor details");
+  }
+};
 
   return (
     <div className="container">
